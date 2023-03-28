@@ -1,13 +1,13 @@
-#An SOP-based logic synthesis tool for SRAM-IMC
+# An SOP-based logic synthesis tool for SRAM-IMC
 
 It is a demo C/C++ project for the manuscript "An Area-Efficient In-Memory Implementation Method of Arbitrary Boolean Function based on SRAM Array", whose author is Sunrui Zhang. 
 Source codes and a compiled executable file are contained.
 
-##Requirement
+## Requirement
 This project is compiled and tested in Windows.
 The whole project are compiled under MinGW w64 6.0 (gcc/g++ 8.1.0), and the version of CMake is 3.24.2. 
 
-##Users' Guide: 
+## Users' Guide: 
 
 1. The synthesis program only allows "pure pla" for inputs. "Pure pla" files are typical .pla format files that not contain any configuration information (.i, .o, .p, etc.) and comments(text starts with "#"). There are some examples of pure pla files in ./resource. Besides, the synthesis program only supports processing single-output functions temporarily. So, please ensure that the pla file for input only contains single output to obtain the correct synthesis result. You can also use the following tool chain to convert a multi-output BLIF file to a single-output PLA file:
 
