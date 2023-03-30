@@ -101,7 +101,7 @@ long int rootprocess
 		/*enter name of the file*/
 		puts("Enter the function file name (with suffix) to be processed:");
 		scanf("%1000s", FILE_NAME);
-		puts("Enter the output file name (with suffix)");
+		puts("Enter the output file name:");
 		scanf("%1000s", OUTPUT_FILE);
 		//open output file
 		if ((ofp = fopen(OUTPUT_FILE, "w")) == NULL)
