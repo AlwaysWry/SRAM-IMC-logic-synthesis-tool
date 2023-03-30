@@ -61,7 +61,7 @@ int blossomMethod(int mode, long int red_max, long int red_min, long int red_upp
 	float diff_rate;
 	long int match_num = -1, match_new = -1, area_diff;
 	long int opt_match_num = 0, opt_red = 0, opt_area_diff = 0;
-	long int array_count = original_array[0].order_of_term;
+	long int array_count = (long int)original_array[0].order_of_term;
 	long int para_lim[3], opt_lim[3];
 	long int com_max, com_min, rm_max, rm_min, rs_max, rs_min;
 	long int sum_upperbound, sum_lowerbound, lim_count = 0, lim_sum, lim_num;
@@ -193,10 +193,15 @@ int blossomMethod(int mode, long int red_max, long int red_min, long int red_upp
 	outputBlossomResult(spatial_triangle, array_count);
 
 	diff_rate = original_area == 0 ? 0 : ((float)opt_area_diff * 100 / (float)original_area);
+	
 	printf("Optimal number of spatial pairs is %ld, with minimum redundancy (%ld, %ld, %ld, %ld).\nArea was reduced by %.2lf%% after spatial mergence, from %ld to %ld, %ld 10T SRAM cells in total.\n", opt_match_num, result_lim[0],\
 		result_lim[1], result_lim[2], opt_red, diff_rate, original_area, original_area - opt_area_diff, opt_area_diff);
 	printf("Spatial mergence has finished.\n");
 	printf("*****************************************************\n");
+	fprintf(ofp, "Optimal number of spatial pairs is %ld, with minimum redundancy (%ld, %ld, %ld, %ld).\nArea was reduced by %.2lf%% after spatial mergence, from %ld to %ld, %ld 10T SRAM cells in total.\n", opt_match_num, result_lim[0],\
+		result_lim[1], result_lim[2], opt_red, diff_rate, original_area, original_area - opt_area_diff, opt_area_diff);
+	fprintf(ofp, "Spatial mergence has finished.\n");
+	fprintf(ofp, "*****************************************************\n");
 
 	/*free memories*/
 	free_all(array_count);

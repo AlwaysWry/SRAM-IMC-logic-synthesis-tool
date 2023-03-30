@@ -330,11 +330,13 @@ int iteratedCombine
 int outputIterationMap
 	(long int max_number_of_literals, long int total_number_of_terms, long int iter_flag)
 {
-	int row_order, group_order, count = 0, flag = 0;
+	int row_order, count = 0, flag = 0;
+	long int group_order;
 	long int number_of_literals, number_of_terms;
 	long int iter_count;
 
 	printf("------------------ITERATION RESULT-------------------\n");
+	fprintf(ofp, "------------------ITERATION RESULT-------------------\n");
 
 	for (row_order = 0; row_order < max_number_of_literals; row_order++)
 	{
@@ -351,20 +353,28 @@ int outputIterationMap
 			if (iteration_array[iter_flag].comb_info[row_order] >= 1)
 			{
 				printf("\nNumber of literals\tOrder of Combs\tOrder of term\n");
+				fprintf(ofp, "\nNumber of literals\tOrder of Combs\tOrder of term\n");
 				printf("-----------------------------------------------------\n");
+				fprintf(ofp, "-----------------------------------------------------\n");
+
 				for (group_order = 0; group_order < iteration_array[iter_flag].comb_info[row_order]; group_order++)
 				{
 					printf("%18ld\t%14ld\t{", number_of_literals, group_order);
+					fprintf(ofp, "%18ld\t%14ld\t{", number_of_literals, group_order);
 					while (count < number_of_terms && iteration_array[iter_flag].result_map[row_order][group_order][count] != -1)
 					{//if next element is -1, it means all valid elements have been printed
 						printf("%ld", iteration_array[iter_flag].result_map[row_order][group_order][count]);
+						fprintf(ofp, "%ld", iteration_array[iter_flag].result_map[row_order][group_order][count]);
 						count++;
 						if (iteration_array[iter_flag].result_map[row_order][group_order][count] != -1)
 						{
 							printf(",");
+							fprintf(ofp, ",");
 						}
 					}
 					printf("}\n");
+					fprintf(ofp, "}\n");
+
 					count = 0;
 				}
 				printf("-----------------------------------------------------\n");
@@ -374,15 +384,19 @@ int outputIterationMap
 		if (iter_count != 0)
 		{
 			printf("unmerged terms with %ld literals:\n{", number_of_literals);
+			fprintf(ofp, "unmerged terms with %ld literals:\n{", number_of_literals);
 			for (count = 1; count <= iter_count; count++)
 			{
 				printf("%ld", iteration_array[iter_flag].iteration_info[row_order][count].order_of_term);
+				fprintf(ofp, "%ld", iteration_array[iter_flag].iteration_info[row_order][count].order_of_term);
 				if (count != iter_count)
 				{
 					printf(",");
+					fprintf(ofp, ",");
 				}
 			}
 			printf("}\n");
+			fprintf(ofp, "}\n");
 			flag = 1;
 		}
 		count = 0;
@@ -390,6 +404,7 @@ int outputIterationMap
 	if (flag == 0)
 	{
 		printf("All terms have been logic merged!\n");
+		fprintf(ofp, "All terms have been logic merged!\n");
 		return ITERATION_FINISH;
 	}
 	else
@@ -422,22 +437,27 @@ int setUncombinedTerms
 		else
 		{
 			printf("Independent terms with %ld literals:\n", number_of_literals);
+			fprintf(ofp, "Independent terms with %ld literals:\n", number_of_literals);
 
 			if (iter_count == 0 && independent_count == 0)
 			{
 				printf("NONE\n");
+				fprintf(ofp, "NONE\n");
 				continue;
 			}
 			printf("{");
+			fprintf(ofp, "{");
 
 			if (independent_count != 0)
 			{
 				for (group_order = 1; group_order <= independent_count; group_order++)
 				{
-					printf("%d", process_info.independent_info[row_order][group_order].order_of_term);
+					printf("%ld", process_info.independent_info[row_order][group_order].order_of_term);
+					fprintf(ofp, "%ld", process_info.independent_info[row_order][group_order].order_of_term);
 					if (group_order != independent_count)
 					{
 						printf(",");
+						fprintf(ofp, ",");
 					}
 				}
 			}
@@ -446,15 +466,18 @@ int setUncombinedTerms
 				for (group_order = 1; group_order <= iter_count; group_order++)
 				{
 					process_info.independent_info[row_order][independent_count + group_order] = iteration_array[iter_flag - 1].iteration_info[row_order][group_order];
-					printf("%d", process_info.independent_info[row_order][independent_count + group_order].order_of_term);
+					printf("%ld", process_info.independent_info[row_order][independent_count + group_order].order_of_term);
+					fprintf(ofp, "%ld", process_info.independent_info[row_order][independent_count + group_order].order_of_term);
 					if (group_order != iter_count)
 					{
 						printf(",");
+						fprintf(ofp, ",");
 					}
 				}
 			}
 
 			printf("}\n");
+			fprintf(ofp, "}\n");
 			process_info.independent_info[row_order][0].order_of_term = independent_count + iter_count;
 		}
 	}

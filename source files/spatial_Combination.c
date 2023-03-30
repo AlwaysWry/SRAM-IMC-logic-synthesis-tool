@@ -231,8 +231,12 @@ int outputLogicalResult
 	long int* order_of_term;
 	array_count = (long int)original_array[0].order_of_term;
 	printf("\nSEARCH RESULT:\n");
+	fprintf(ofp, "\nSEARCH RESULT:\n");
 	printf("Order\tCluster\tLiteral set\n");
+	fprintf(ofp, "Order\tCluster\tLiteral set\n");
 	printf("---------------------------\n");
+	fprintf(ofp, "---------------------------\n");
+
 	for (count = 1; count <= array_count; count++)
 	{
 		comb_count = 0;
@@ -242,25 +246,33 @@ int outputLogicalResult
 		order_of_term = original_array[count].order_of_term;
 
 		printf("%5ld\t", count);
+		fprintf(ofp, "%5ld\t", count);
 		if (original_array[count].order_of_term != NULL)
 		{
 			printf("{");
+			fprintf(ofp, "{");
 			while (original_array[count].order_of_term[comb_count + 1] != -1)
 			{
 				printf("%ld,", original_array[count].order_of_term[comb_count]);
+				fprintf(ofp, "%ld,", original_array[count].order_of_term[comb_count]);
 				comb_count++;
 			}
 			printf("%ld}\t", original_array[count].order_of_term[comb_count]);
+			fprintf(ofp, "%ld}\t", original_array[count].order_of_term[comb_count]);
 			printf("(%ld,%ld)\n", iteration_array[number_of_iterations].LUT_literals[0], iteration_array[number_of_iterations].LUT_literals[1]);
+			fprintf(ofp, "(%ld,%ld)\n", iteration_array[number_of_iterations].LUT_literals[0], iteration_array[number_of_iterations].LUT_literals[1]);
 		}
 		else
 		{
 			printf("{%ld}\t", process_info.independent_info[number_of_literals - 1][order_of_combs].order_of_term);
+			fprintf(ofp, "{%ld}\t", process_info.independent_info[number_of_literals - 1][order_of_combs].order_of_term);
 			printf("-\n");
+			fprintf(ofp, "-\n");
 		}
 
 	}
 	printf("---------------------------\n");
+	fprintf(ofp, "---------------------------\n");
 	return 0;
 }
 

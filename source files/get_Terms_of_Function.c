@@ -42,8 +42,10 @@ int getTermsofFunction
 	//check if the file exists
 	if ((fp = fopen(file,"rb")) == NULL)
 	{
-		printf("No such file!\n");
-        system("pause");
+		printf("Illegal input file!\n");
+		fprintf(ofp, "Illegal input file!\n");
+		fclose(ofp);
+        system("exit");
 		exit(EXIT_FAILURE);
 	}
 
@@ -54,11 +56,14 @@ int getTermsofFunction
 	if (max_number_of_literals == 0)
 	{
 		printf("the file is empty!\n");
-        system("pause");
+		fprintf(ofp, "the file is empty!\n");
+		fclose(ofp);
+        system("exit");
 		exit(EXIT_FAILURE);
 	}
 
 	printf("\nGetting terms from the file...\n");
+	fprintf(ofp, "Getting terms from the file...\n");
 
 	//get the length of spliter between terms, including \n
 	while((ch = getc(fp)) != EOF)
@@ -108,7 +113,9 @@ int getTermsofFunction
 #endif
 		//print terms
 		printf("term%ld of the function is:\n",order_of_terms);
+		fprintf(ofp, "term%ld of the function is:\n",order_of_terms);
 		puts(process_info.func_info[order_of_terms]);
+		fprintf(ofp, "%s\n", process_info.func_info[order_of_terms]);
 		//skip the spliter between terms
 		fseek(fp,split_length,SEEK_CUR);
 		//move the cursor to current location
@@ -125,8 +132,10 @@ int getTermsofFunction
 	stats_of_function[1] = total_number_of_terms;
 	fclose(fp);
 	printf("\nthe number of literals is %ld\nthe number of terms is %ld\n",max_number_of_literals,total_number_of_terms);
+	fprintf(ofp, "\nthe number of literals is %ld\nthe number of terms is %ld\n",max_number_of_literals,total_number_of_terms);
 #ifdef _COMPARATION
     printf("the sum number of variables is %ld\n", var_count);
+	fprintf(ofp, "the sum number of variables is %ld\n", var_count);
 #endif
 	return 0;
 

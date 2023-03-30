@@ -499,18 +499,22 @@ int outputResultMap(long int max_number_of_literals, long int total_number_of_te
 	long int group_order, iter_count;
 
 	printf("\nSEARCH RESULT:\n");
+	fprintf(ofp, "\nSEARCH RESULT:\n");
 
 	if (logical_info.number_of_combinations <= 0)
 	{
 		/*if there's no combination in the original iteration, or all combinations have been found in the
 		original iteration, then it's unnecessary to continue*/
 		printf("No terms can be merged.\n");
+		fprintf(ofp, "No terms can be merged.\n");
 		return ITERATION_FINISH;
 	}
 
 	printf("The optELS is: literal %ld and literal %ld\nMakes %ld combinations, reduced by %ld columns.\n", logical_info.LUT_literals[0], logical_info.LUT_literals[1], logical_info.number_of_combinations, logical_info.opt_column);
+	fprintf(ofp, "The optELS is: literal %ld and literal %ld\nMakes %ld combinations, reduced by %ld columns.\n", logical_info.LUT_literals[0], logical_info.LUT_literals[1], logical_info.number_of_combinations, logical_info.opt_column);
 	
 	printf("------------------ITERATION RESULT-------------------\n");
+	fprintf(ofp, "------------------ITERATION RESULT-------------------\n");
 
 	for (row_order = 0; row_order < max_number_of_literals; row_order++)
 	{
@@ -527,38 +531,49 @@ int outputResultMap(long int max_number_of_literals, long int total_number_of_te
 			if (logical_info.comb_info[row_order] >= 1)
 			{
 				printf("\nNumber of literals\tOrder of Combs\tOrder of term\n");
+				fprintf(ofp, "\nNumber of literals\tOrder of Combs\tOrder of term\n");
 				printf("-----------------------------------------------------\n");
+				fprintf(ofp, "-----------------------------------------------------\n");
 				for (group_order = 0; group_order < logical_info.comb_info[row_order]; group_order++)
 				{
 					printf("%18ld\t%14ld\t{", number_of_literals, group_order);
+					fprintf(ofp, "%18ld\t%14ld\t{", number_of_literals, group_order);
 					while (count < number_of_terms && logical_info.result_map[row_order][group_order][count] != -1)
 					{
 						printf("%ld", logical_info.result_map[row_order][group_order][count]);
+						fprintf(ofp, "%ld", logical_info.result_map[row_order][group_order][count]);
 						count++;
 						if (logical_info.result_map[row_order][group_order][count] != -1)
 						{
 							printf(",");
+							fprintf(ofp, ",");
 						}
 					}
 					printf("}\n");
+					fprintf(ofp, "}\n");
 					count = 0;
 				}
 				printf("-----------------------------------------------------\n");
+				fprintf(ofp, "-----------------------------------------------------\n");
 			}
 		}
 		iter_count = logical_info.iteration_info[row_order][0].order_of_term;
 		if (iter_count != 0)
 		{
 			printf("unmerged terms with %ld literals:\n{", number_of_literals);
+			fprintf(ofp, "unmerged terms with %ld literals:\n{", number_of_literals);
 			for (count = 1; count <= iter_count; count++)
 			{
 				printf("%ld", logical_info.iteration_info[row_order][count].order_of_term);
+				fprintf(ofp, "%ld", logical_info.iteration_info[row_order][count].order_of_term);
 				if (count != iter_count)
 				{
 					printf(",");
+					fprintf(ofp, ",");
 				}
 			}
 			printf("}\n");
+			fprintf(ofp, "}\n");
 			flag = 1;
 		}
 		count = 0;
@@ -567,6 +582,7 @@ int outputResultMap(long int max_number_of_literals, long int total_number_of_te
 	{
 		/*it means there's no terms(except independent terms) left in iteration group*/
 		printf("All terms have been logic merged!\n");
+		fprintf(ofp, "All terms have been logic merged!\n");
 		return ITERATION_FINISH;
 	}
 	else

@@ -30,6 +30,7 @@ int getNumberofVariables
     //reinitialize the counter
 
 	printf("\nDividing terms...\n");
+    fprintf(ofp, "\nDividing terms...\n");
 
 	term = (char*)malloc((max_number_of_literals + 1) * sizeof(char));
 	while (terms_order < total_number_of_terms)
@@ -52,6 +53,7 @@ int getNumberofVariables
         if (number_of_literals == 0)
         {
             printf("term%ld: %ld variables, %ld terms in this group now.\n", terms_order, number_of_literals, group_order);
+            fprintf(ofp, "term%ld: %ld variables, %ld terms in this group now.\n", terms_order, number_of_literals, group_order);
             terms_order++;
             continue;
         }
@@ -61,6 +63,7 @@ int getNumberofVariables
 			group_order = 1;
 			process_info.variables_info[number_of_literals - 1][1] = group_order;
 			printf("term%ld: %ld variables, %ld terms in this group now.\n", terms_order, number_of_literals, group_order);
+            fprintf(ofp, "term%ld: %ld variables, %ld terms in this group now.\n", terms_order, number_of_literals, group_order);
 		}
 		else
 		{
@@ -69,6 +72,7 @@ int getNumberofVariables
 			group_order++;
 			process_info.variables_info[number_of_literals - 1][1] = group_order;
 			printf("term%ld: %ld variables, %ld terms in this group now.\n", terms_order, number_of_literals, group_order);
+            fprintf(ofp, "term%ld: %ld variables, %ld terms in this group now.\n", terms_order, number_of_literals, group_order);
 		}
 		//write a new order of term to the rear of this row(array)
 		process_info.variables_info[number_of_literals - 1][group_order + 1] = terms_order;
@@ -77,6 +81,7 @@ int getNumberofVariables
 	free(term);//free the memory space only used in this function
 	stats_of_function[2] = actual_literals;//the actual max number of literals among these terms
 	printf("\nSeparation finished. The primitive area of SOP-based scheme is %ld.\n", stats_of_function[2] * stats_of_function[1]);
+    fprintf(ofp, "\nSeparation finished. The primitive area of SOP-based scheme is %ld.\n", stats_of_function[2] * stats_of_function[1]);
 
 	return 0;
 }

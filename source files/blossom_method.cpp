@@ -232,21 +232,31 @@ int outputBlossomResult(spatial_info** spatial_triangle, long int vertice_num)
 	long int red;
 
 	printf("\nSEARCH RESULT:\n");
-	printf("All orders in cluster sets are orders of logical cluster, in the result table of logical mergence.\n");
+	printf("All orders in cluster sets are orders of logic cluster, in the result table of logic mergence.\n");
 	printf("Cluster set\tRegion I\tRegion II\tRegion III\tTotal redundancy\n");
 	printf("--------------------------------------------------------------------------------\n");
+	fprintf(ofp, "\nSEARCH RESULT:\n");
+	fprintf(ofp, "All orders in cluster sets are orders of logic cluster, in the result table of logic mergence.\n");
+	fprintf(ofp, "Cluster set\tRegion I\tRegion II\tRegion III\tTotal redundancy\n");
+	fprintf(ofp,"--------------------------------------------------------------------------------\n");
+
 	for (int i = 1; i <= vertice_num; i++)
 	{
 		if (i - 1 < match_index[i - 1])
 		{
 			red = spatial_triangle[i - 1][match_index[i - 1] + 1 - i].redundancy[3];
-			printf("{%ld,%ld}\t\t%ld\t\t%ld\t\t%ld\t\t%ld\n", i, match_index[i - 1] + 1, 
+			printf("{%d,%d}\t\t%ld\t\t%ld\t\t%ld\t\t%ld\n", i, match_index[i - 1] + 1, 
+				spatial_triangle[i - 1][match_index[i - 1] + 1 - i].redundancy[0], 
+				spatial_triangle[i - 1][match_index[i - 1] + 1 - i].redundancy[1], 
+				spatial_triangle[i - 1][match_index[i - 1] + 1 - i].redundancy[2], red);
+			fprintf(ofp, "{%d,%d}\t\t%ld\t\t%ld\t\t%ld\t\t%ld\n", i, match_index[i - 1] + 1, 
 				spatial_triangle[i - 1][match_index[i - 1] + 1 - i].redundancy[0], 
 				spatial_triangle[i - 1][match_index[i - 1] + 1 - i].redundancy[1], 
 				spatial_triangle[i - 1][match_index[i - 1] + 1 - i].redundancy[2], red);
 		}
 	}
 	printf("--------------------------------------------------------------------------------\n");
+	fprintf(ofp, "--------------------------------------------------------------------------------\n");
 
 	return 0;
 }

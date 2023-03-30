@@ -49,6 +49,7 @@ int main
 	//puts("* MISS: A SRAM LOGIC SYNTHESIS TOOL *");
 	//puts("*                                   *");
 	//puts("*************************************");
+	puts("Choose an item:");
 	puts("0: Exit");
 	puts("1: Synthesis process");
 
@@ -66,7 +67,8 @@ int main
         puts("Please input the correct operation index!");
 		break;
 	}
-	system("pause");
+	system("exit");
+	exit(0);
 	return 0;
 }
 
@@ -76,6 +78,7 @@ long int rootprocess
 	//EnableMemLeakCheck();
 	//file name
 	char FILE_NAME[FILE_NAME_LENGTH];
+	char OUTPUT_FILE[FILE_NAME_LENGTH];
 	/*basic info of logic function. includes the max number of literals and number of terms*/
 	long int stats_of_function[NUMBER_OF_STATS];
 	//the order number of LUT literals in the literal table
@@ -98,6 +101,16 @@ long int rootprocess
 		/*enter name of the file*/
 		puts("Enter the function file name (with suffix) to be processed:");
 		scanf("%1000s", FILE_NAME);
+		puts("Enter the output file name (with suffix)");
+		scanf("%1000s", OUTPUT_FILE);
+		//open output file
+		if ((ofp = fopen(OUTPUT_FILE, "w")) == NULL)
+		{
+			printf("\nIllegal output file!\n");
+			system("exit");
+			exit(0);
+			return 0;
+		}
         //strcat(FILE_NAME, ".txt");
 		break;
 	default:
@@ -128,7 +141,10 @@ long int rootprocess
 	iter_flag = 0;
 
 	printf("\n*****************************************************\n");
+	fprintf(ofp, "\n*****************************************************\n");
 	printf("Logic mergence...\n");
+	fprintf(ofp, "Logic mergence...\n");
+
 	//get the array of literals chosen to be LUT literals
     separateTerms(stats_of_function[0],stats_of_function[1]);
 	do
@@ -153,7 +169,9 @@ long int rootprocess
 			invalid_number = 0;
 
 			printf("\n*****************************************************\n");
+			fprintf(ofp, "\n*****************************************************\n");
 			printf("\nBeginning ITERATION %d, invalid extracted literal set will be skipped.\n", iter_flag);
+			fprintf(ofp, "\nBeginning ITERATION %d, invalid extracted literal set will be skipped.\n", iter_flag);
 
 			iteration_array = (struct LI*)realloc(iteration_array, (iter_flag + 1) * sizeof(struct LI));
 
@@ -188,9 +206,11 @@ long int rootprocess
 			} while (getLUTliterals(stats_of_function[0], LUT_literals) != ITERATION_FINISH);
 
 			printf("\nSEARCH RESULT:\n");
+			fprintf(ofp, "\nSEARCH RESULT:\n");
 			if (iteration_array[iter_flag].number_of_combinations > 0)
 			{
-				printf("The optELS is: literal %d and literal %d\nMakes %d combinations, reduced by %ld columns.\n", iteration_array[iter_flag].LUT_literals[0], iteration_array[iter_flag].LUT_literals[1], iteration_array[iter_flag].number_of_combinations, iteration_array[iter_flag].opt_column);
+				printf("The optELS is: literal %ld and literal %ld\nMakes %ld combinations, reduced by %ld columns.\n", iteration_array[iter_flag].LUT_literals[0], iteration_array[iter_flag].LUT_literals[1], iteration_array[iter_flag].number_of_combinations, iteration_array[iter_flag].opt_column);
+				fprintf(ofp, "The optELS is: literal %ld and literal %ld\nMakes %ld combinations, reduced by %ld columns.\n", iteration_array[iter_flag].LUT_literals[0], iteration_array[iter_flag].LUT_literals[1], iteration_array[iter_flag].number_of_combinations, iteration_array[iter_flag].opt_column);
 				if (outputIterationMap(stats_of_function[0], stats_of_function[1], iter_flag) == ITERATION_FINISH)
 				{
 					break;
@@ -199,6 +219,7 @@ long int rootprocess
 			else
 			{
 				printf("No terms can be combined.\n");
+				fprintf(ofp, "No terms can be combined.\n");
 			}
 
 		} while (iteration_array[iter_flag].number_of_combinations > 0);
@@ -224,6 +245,7 @@ long int rootprocess
 		setUncombinedTerms(stats_of_function[0], iter_flag + 1);
 	}
     printf("\nLogic Mergence has finished.\n");
+	fprintf(ofp, "\nLogic Mergence has finished.\n");
 
 	getAdversedValue(stats_of_function[0], iter_flag, adversed_seed, adversed_array);
 	red_upperbound = getOriginalValue(stats_of_function[0], iter_flag, original_seed, original_array);
@@ -248,7 +270,8 @@ long int rootprocess
         getRedundancy(stats_of_function[0], red_upperbound);
         blossomMethod(syn_mode, spatial_array[0].cluster_group[0], spatial_array[0].cluster_group[1], red_upperbound);
     } while (syn_mode != 0);
-//TODO: fix the bug that freeAllMemory() has accidentally memory access exception
+
+	fclose(ofp);
     freeAllMemory(stats_of_function, iter_flag);
     return final_area;
 
@@ -313,16 +336,13 @@ int freeAllMemory
 				{
 					free(iteration_array[free_i].result_map[free_j][free_k]);
 				}
-                for (free_k = 0; free_k <= stats_of_function[1]; ++free_k)
+                for (free_k = 0; free_k < stats_of_function[1]; ++free_k)
                 {
                     free(iteration_array[free_i].iteration_info[free_j][free_k].code);
                 }
+            	free(iteration_array[free_i].iteration_info[free_j]);
 			}
 		}
-        for (free_l = 0; free_l < iter_count[free_i][free_j]; free_l++)
-        {
-            free(iteration_array[free_i].iteration_info[free_j]);
-        }
 	}
 
 	for (free_i = 0; free_i < array_count; free_i++)
