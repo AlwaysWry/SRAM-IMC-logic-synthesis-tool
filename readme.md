@@ -50,6 +50,10 @@
 　　The file name needs to contain file path and the suffix. The examples in ./resource are TXT files.
 
 　　e.g. ```./resource/clipf1.txt```
+  
+  　iii> Input the output file name below this information:
+   
+　　```Enter the output file name:```
 
 　　Then program will output the term information, the iteration results of logic mergence and the results of spatial mergence.
 
