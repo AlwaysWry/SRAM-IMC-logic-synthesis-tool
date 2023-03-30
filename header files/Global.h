@@ -82,3 +82,4 @@ spatial_info* spatial_array;
 spatial_info** spatial_triangle;
 spatial_info** spatial_matrix;
 long int original_area;
+FILE* ofp;
