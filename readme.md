@@ -51,7 +51,7 @@
 
 　　e.g. ```./resource/clipf1.txt```
   
-    iii> Input the output file name below this information:
+  　iii> Input the output file name below this information:
    
 　　```Enter the output file name:```
 
