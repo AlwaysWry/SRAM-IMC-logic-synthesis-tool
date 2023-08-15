@@ -1,6 +1,9 @@
 # An SOP-based logic synthesis tool for SRAM-IMC
 
-　　It is a demo C/C++ project for the manuscript "An Area-Efficient In-Memory Implementation Method of Arbitrary Boolean Function based on SRAM Array". 
+　　It is a demo C/C++ project for the work in the following article:
+  
+　　S. Zhang, X. Cui, F. Wei and X. Cui, "[An Area-Efficient In-Memory Implementation Method of Arbitrary Boolean Function based on SRAM 
+　　Array](https://ieeexplore.ieee.org/document/10202194)," in IEEE Transactions on Computers, doi: 10.1109/TC.2023.3301156.
 
 　　File dictionary structure:
 
